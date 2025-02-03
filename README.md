@@ -1,2 +1,2 @@
 # swe-project
-by Oliver Jen, Yinning Liu, Benjamin Smith, James Chen
+by Oliver Jen, Yining Liu, Benjamin Smith, James Chen
