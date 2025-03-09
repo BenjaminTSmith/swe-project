@@ -1,4 +1,25 @@
 import { React, useState } from "react";
+import { getFirestore, doc,setDoc } from 'firebase/firestore';
+import { app } from './firebaseConfig.js';
+
+const db = getFirestore(app); 
+
+const addUser = async (email, name, password, uid) => {
+  try {
+    console.log("Attempting to add user with UID: ", uid);
+    const userRef = doc(db, "Users", uid);
+    await setDoc(userRef, {
+      email: email,
+      name: name,
+      password: password,
+    });
+    console.log("User added successfully!");
+  } catch (e) {
+    console.error("Error adding user: ", e);  
+    alert(`Error adding user: ${e.message}`);  
+    throw new Error("Error adding user");
+  }
+};
 
 const SignUp = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -33,8 +54,11 @@ const SignUp = ({ onClose }) => {
       setNameError("Name can't be blank");
       valid = false;
     }
-
-    if (valid) setConfirmation(true);
+    if (valid) {
+      const uid = Date.now().toString(); 
+      addUser(email, name, password, uid);
+      setConfirmation(true);
+    }
   };
 
   return (
