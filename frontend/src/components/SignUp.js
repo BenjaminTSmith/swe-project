@@ -55,7 +55,7 @@ const SignUp = ({ onClose }) => {
       valid = false;
     }
     if (valid) {
-      const uid = Date.now().toString(); 
+      const uid = email; 
       addUser(email, name, password, uid);
       setConfirmation(true);
     }
