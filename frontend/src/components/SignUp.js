@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 
-const SignUp = ({ onClose, onSignup }) => {
+const SignUp = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPass, setVerifyPass] = useState("");
