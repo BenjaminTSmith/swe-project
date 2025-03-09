@@ -1,8 +1,11 @@
-import React from 'react'
-const loginScr = () => {
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+const LoginScr = () => {
+  const navigate = useNavigate();
 
   const handleLogin = () => {
-    alert('LoginButton Clicked');
+    alert('TODO: Add Sign in logic');
+    navigate('/discover');
   };
 
   return (
@@ -22,4 +25,4 @@ const loginScr = () => {
   )
 }
 
-export default loginScr
+export default LoginScr

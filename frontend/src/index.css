@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 
+/* General Styles */
 * {
   margin: 0;
   padding: 0;
@@ -26,10 +27,6 @@ body {
   align-items: center;
 }
 
-.logo {
-  height: 2.5rem;
-}
-
 .App {
   width: 100%;
   height: 100vh;
@@ -39,22 +36,63 @@ body {
   align-items: center;
 }
 
-.Header,
-.Footer {
+/* Header */
+
+.Header {
   width: 100%;
   background-color: #efefef;
   display: flex;
   padding: 1rem;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   border-bottom: 1px solid #333;
   box-shadow: 0px 0px 15px gray;
   z-index: 10;
+  height: 5rem;
 }
 
-.Header h1 {
-  font-size: 1.5rem;
+.Header ul {
+  color: #fff;
+  list-style-type: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
 }
+
+.logo {
+  height: 2.5rem;
+  position: absolute;
+  left: 1rem;
+}
+
+.Header li {
+  padding: 0.5rem 0.75rem 0.5rem 0.75rem;
+  color: #000;
+  transition: all 0.25s ease;
+  border-radius: 4px;
+  background-color: transparent;
+  margin: 0.5rem;
+}
+
+.Header li:hover {
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.Header li.active {
+  background-color: #a1a1a1; 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.Header li a {
+  color: #000;
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+
+/* LoginScreen */
 
 .loginScreen {
   background-image: url('./assets/Marston.png');
@@ -111,6 +149,90 @@ body {
 }
 
 .loginButton:hover {
+  background-color: rgba(220, 220, 220);
+  box-shadow: 3px 3px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+/* Discover Screen */
+
+.discoverWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.discoverContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem;
+  box-sizing: border-box;
+  gap: 2.5rem;
+}
+
+.discoverInput {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  border: 2px solid #666666;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.discoverInput:focus {
+  border-color: #000000;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+
+.tutorCardContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.tutorCard {
+  background-color: rgb(217,217,217);
+  border-radius: 5px;
+  padding: 1rem;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.tutorName {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.tutorDesc {
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.scheduleButton {
+  font-size: 1.5rem;
+  z-index: 2;
+  padding: 0.5rem;
+  border-radius: 5px;
+  background-color: rgba(239, 239, 239);
+  border-width: 3;
+  transition: background-color 0.25s, box-shadow 0.25s;
+  margin: auto;
+  height: 4rem;
+  flex: 1;
+}
+
+.scheduleButton:hover {
   background-color: rgba(220, 220, 220);
   box-shadow: 3px 3px 4px rgba(0,0,0,0.1);
   cursor: pointer;
