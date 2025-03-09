@@ -1,28 +1,23 @@
-import { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import logo from "../assets/Logo.png";
 
-const useWindowWidth = () => {
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  
-    useEffect(() => {
-      const handleResize = () => {
-        setWindowWidth(window.innerWidth);
-      };  
-      window.addEventListener('resize', handleResize);
-  
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
-  
-    return windowWidth;
-  };
-
 const Header = () => {
-  const width = useWindowWidth();
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/';
   return (
     <header className="Header">
       <img className = "logo" src={logo} alt="Logo" />
+
+      {!isLoginPage && (
+        <nav className="navigation-menu">
+          <ul>
+            <li className={location.pathname === '/discover' ? 'active' : ''}>
+              <Link to='/discover'>Discover Tutors</Link></li>
+            <li className={location.pathname === '/scheduler' ? 'active' : ''}>
+              <Link to='/scheduler'>Tutor Calendar</Link></li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 };

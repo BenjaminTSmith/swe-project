@@ -1,8 +1,10 @@
-import React from 'react'
-const loginScr = () => {
-  const handleLogin = async () => {
-    alert('LoginButton Clicked');
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+const LoginScr = () => {
+  const navigate = useNavigate();
 
+  const handleLogin = async () => {
+    alert('TODO: Add Sign in logic');
     // sends time to FLask currently as just a test
     const response = await fetch("http://127.0.0.1:5000/time", {
       method: "POST",
@@ -12,6 +14,7 @@ const loginScr = () => {
 
     const data = await response.json();
     console.log(data);  // Log Flask response
+    navigate('/discover');
   };
 
   return (
@@ -31,4 +34,4 @@ const loginScr = () => {
   )
 }
 
-export default loginScr
+export default LoginScr
