@@ -1,12 +1,10 @@
-import {React, useState} from 'react'
-import TutorCard from '../components/TutorCard'
+import { React, useState } from "react";
+import TutorCard from "../components/TutorCard";
+import "../css/discover.css";
 
 const DiscoverScr = () => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  }
   return (
     <div className="discoverWrapper">
       <div className="discoverContainer">
@@ -14,7 +12,9 @@ const DiscoverScr = () => {
           type="text"
           placeholder="Search..."
           value={searchTerm}
-          onChange={handleSearchChange}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
           className="discoverInput"
         />
         <div className="tutorCardContainer">
@@ -30,7 +30,7 @@ const DiscoverScr = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DiscoverScr
+export default DiscoverScr;
