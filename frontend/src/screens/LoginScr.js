@@ -1,8 +1,17 @@
 import React from 'react'
 const loginScr = () => {
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     alert('LoginButton Clicked');
+
+    // sends time to FLask currently as just a test
+    const response = await fetch("http://127.0.0.1:5000/time", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ time: new Date() }),
+    });
+
+    const data = await response.json();
+    console.log(data);  // Log Flask response
   };
 
   return (
