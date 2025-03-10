@@ -1,0 +1,21 @@
+.calendarContainer {
+  margin-top: 3rem;
+}
+
+.calendar {
+  width: 50vw;
+  height: 80vh;
+}
+
+.rbc-day-slot .rbc-event,
+.rbc-day-slot .rbc-background-event {
+  font-size: 0.7vw;
+}
+
+.rbc-agenda-event-cell {
+  cursor: pointer;
+}
+
+.rbc-allday-cell {
+  display: none;
+}
