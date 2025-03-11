@@ -11,6 +11,10 @@ const SchedulerScr = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("week");
 
+  const [location, setLocation] = useState("");
+  const [subjects, setSubjects] = useState("");
+
+  // delete event/availability when clicked on
   const handleSelectEvent = (event) => {
     setAvailability((prev) =>
       prev.filter(
@@ -21,6 +25,7 @@ const SchedulerScr = () => {
     );
   };
 
+  // automatically merge overlapping availability
   const handleSelectSlot = (slotInfo) => {
     const newStart = slotInfo.start;
     const newEnd = slotInfo.end;
@@ -62,50 +67,86 @@ const SchedulerScr = () => {
     }
   };
 
+  const saveChanges = () => {
+    alert(
+      "TODO: Make this function update the database with the new availability, location, and subjects"
+    );
+  };
+
   return (
-    <div className="calendarContainer">
-      <Calendar
-        className="calendar"
-        localizer={localizer}
-        events={availability}
-        startAccessor="start"
-        endAccessor="end"
-        selectable
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleSelectEvent}
-        defaultView="week"
-        date={currentDate}
-        view={view}
-        views={["day", "week", "agenda"]}
-        onNavigate={setCurrentDate}
-        onView={setView}
-        min={
-          new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
-            8,
-            0
-          )
-        }
-        max={
-          new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate(),
-            22,
-            0
-          )
-        }
-        step={15}
-        timeslots={4}
-        eventPropGetter={() => ({
-          style: {
-            backgroundColor: "#4CAF50",
-            border: "none",
-          },
-        })}
-      />
+    <div className="schedulerContainer">
+      <div className="calendarContainer">
+        <Calendar
+          className="calendar"
+          localizer={localizer}
+          events={availability}
+          startAccessor="start"
+          endAccessor="end"
+          selectable
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          defaultView="week"
+          date={currentDate}
+          view={view}
+          views={["day", "week", "agenda"]}
+          onNavigate={setCurrentDate}
+          onView={setView}
+          min={
+            new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate(),
+              8,
+              0
+            )
+          }
+          max={
+            new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth(),
+              currentDate.getDate(),
+              22,
+              0
+            )
+          }
+          step={15}
+          timeslots={4}
+          eventPropGetter={() => ({
+            style: {
+              backgroundColor: "#4CAF50",
+              border: "none",
+            },
+          })}
+        />
+      </div>
+      <div className="textFieldContainer">
+        <div className="inputContainer">
+          Subjects
+          <input
+            type="text"
+            value={subjects}
+            onChange={(event) => {
+              setSubjects(event.target.value);
+            }}
+            className="schedulerTextInput"
+          ></input>
+        </div>
+        <div className="inputContainer">
+          Location
+          <input
+            type="text"
+            value={location}
+            onChange={(event) => {
+              setLocation(event.target.value);
+            }}
+            className="schedulerTextInput"
+          ></input>
+        </div>
+
+        <button className="saveButton" onClick={saveChanges}>
+          Save Changes
+        </button>
+      </div>
     </div>
   );
 };
