@@ -30,7 +30,7 @@
 .textFieldContainer {
   display: flex;
   flex-direction: column;
-  gap: 10vh;
+  gap: 5vh;
 }
 
 .inputContainer {
@@ -64,4 +64,24 @@
   background-color: rgba(220, 220, 220);
   box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+}
+
+.checkBoxContainer {
+  display: flex;
+  gap: 0.5vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox {
+  height: 3vh;
+  width: 3vh;
+  border-radius: 10px;
+  transition: background-color 0.25s, box-shadow 0.25s;
+}
+
+.checkbox:hover {
+  cursor: pointer;
+  background-color: rgba(220, 220, 220);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }

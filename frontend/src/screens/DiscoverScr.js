@@ -1,12 +1,15 @@
 import { React, useState } from "react";
 import TutorCard from "../components/TutorCard";
+import PopupCalendar from "../components/PopupCalendar";
 import "../css/discover.css";
 
 const DiscoverScr = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [popup, setPopup] = useState(false);
 
   return (
     <div className="discoverWrapper">
+      {popup && <PopupCalendar onClose={() => setPopup(false)} />}
       <div className="discoverContainer">
         <input
           type="text"
@@ -18,7 +21,7 @@ const DiscoverScr = () => {
           className="discoverInput"
         />
         <div className="tutorCardContainer">
-          <TutorCard />
+          <TutorCard onSelect={() => setPopup(true)} />
           <TutorCard />
           <TutorCard />
           <TutorCard />

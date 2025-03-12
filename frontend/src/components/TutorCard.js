@@ -1,29 +1,24 @@
-import React from 'react'
+import React from "react";
 
-const TutorCard = ({tutor = {name: "John Smith", subjects: ["Computer Science","Mathematics"]}}) => {
-  
+const TutorCard = ({
+  tutor = { name: "John Smith", subjects: ["Computer Science", "Mathematics"] },
+  onSelect,
+}) => {
   const { name, subjects } = tutor;
 
-  const handleSession = () => {
-    alert("Book Session Button Pressed");
-    console.log(tutor.name);
-  }
-
   return (
-    <div className='tutorCard'>
-      <div className='tutorText'>
-        <div className='tutorName'>
-          {name}
-        </div>
-        <div className='tutorDesc'>
-          <b>Subjects: </b> {subjects.join(', ')}
+    <div className="tutorCard">
+      <div className="tutorText">
+        <div className="tutorName">{name}</div>
+        <div className="tutorDesc">
+          <b>Subjects: </b> {subjects.join(", ")}
         </div>
       </div>
-        <button className='scheduleButton' onClick={handleSession}>
-          <b>Schedule Session</b>
-        </button>
+      <button className="scheduleButton" onClick={onSelect}>
+        <b>Schedule Session</b>
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default TutorCard
+export default TutorCard;
