@@ -2,24 +2,6 @@
   margin-top: 3rem;
 }
 
-.calendar {
-  width: 50vw;
-  height: 80vh;
-}
-
-.rbc-day-slot .rbc-event,
-.rbc-day-slot .rbc-background-event {
-  font-size: 0.7vw;
-}
-
-.rbc-agenda-event-cell {
-  cursor: pointer;
-}
-
-.rbc-allday-cell {
-  display: none;
-}
-
 .schedulerContainer {
   display: flex;
   justify-content: center;
@@ -84,4 +66,45 @@
   cursor: pointer;
   background-color: rgba(220, 220, 220);
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Calendar Styles */
+.calendar {
+  width: 50vw;
+  height: 80vh;
+}
+
+.rbc-allday-cell {
+  display: none;
+}
+
+.rbc-header {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5vh;
+  border-radius: 10px;
+}
+
+.rbc-time-header-cell .rbc-today {
+  background-color: #adadad;
+}
+
+.rbc-time-slot {
+  z-index: 1;
+}
+
+.rbc-event,
+.rbc-background-event {
+  z-index: 2;
+  padding: 0px;
+  border: none;
+  font-size: 0.8vw;
+  border-radius: 2px;
+}
+
+.rbc-events-container {
+  width: 100%;
+  border-radius: 0;
 }

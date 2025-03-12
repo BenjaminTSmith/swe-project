@@ -52,7 +52,7 @@ const PopupCalendar = ({ onClose, tutor }) => {
             defaultView="week"
             date={currentDate}
             view={view}
-            views={["day", "week", "agenda"]}
+            views={["day", "week"]}
             onNavigate={setCurrentDate}
             onView={setView}
             min={
