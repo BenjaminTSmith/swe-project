@@ -13,6 +13,8 @@ const SchedulerScr = () => {
 
   const [location, setLocation] = useState("");
   const [subjects, setSubjects] = useState("");
+  const [rate, setRate] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
 
   // delete event/availability when clicked on
   const handleSelectEvent = (event) => {
@@ -69,7 +71,7 @@ const SchedulerScr = () => {
 
   const saveChanges = () => {
     alert(
-      "TODO: Make this function update the database with the new availability, location, and subjects"
+      "TODO: Make this function update the database with the new availability, location, subjects, and public status"
     );
   };
 
@@ -88,7 +90,7 @@ const SchedulerScr = () => {
           defaultView="week"
           date={currentDate}
           view={view}
-          views={["day", "week", "agenda"]}
+          views={["day", "week"]}
           onNavigate={setCurrentDate}
           onView={setView}
           min={
@@ -140,6 +142,28 @@ const SchedulerScr = () => {
               setLocation(event.target.value);
             }}
             className="schedulerTextInput"
+          ></input>
+        </div>
+        <div className="inputContainer">
+          Hourly Rate
+          <input
+            type="text"
+            value={rate}
+            onChange={(event) => {
+              setRate(event.target.value);
+            }}
+            className="schedulerTextInput"
+          ></input>
+        </div>
+        <div className="checkBoxContainer">
+          Make Tutor Posting Public:
+          <input
+            type="checkbox"
+            className="checkbox"
+            value={isPublic}
+            onChange={() => {
+              setIsPublic(!isPublic);
+            }}
           ></input>
         </div>
 
