@@ -3,6 +3,9 @@ import { React, useState } from "react";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { app } from "./firebaseConfig.js";
 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+const auth = getAuth(); 
+
 const db = getFirestore(app);
 
 const SignUp = ({ onClose }) => {
@@ -51,7 +54,12 @@ const SignUp = ({ onClose }) => {
     if (password === "") {
       setPasswordError("Password can't be blank");
       valid = false;
-    } else if (password !== verifyPass) {
+      
+    } 
+    if (password.length< 6){
+      setPasswordError("Password is too short! Minimum 6 characters");
+      valid = false;
+    }else if (password !== verifyPass) {
       setPasswordError("Passwords do not match");
       valid = false;
     }
@@ -62,11 +70,15 @@ const SignUp = ({ onClose }) => {
     }
 
     if (valid) {
-      const uid = email;
-      const res = await addUser(email, name, password, uid);
-      if (res) {
-        setConfirmation(true);
-      }
+      const userCredential = createUserWithEmailAndPassword(auth, email, password);
+      const emailUID = email.toLowerCase();      
+      addUser(email, name, password, emailUID);
+      setConfirmation(true);
+      // const uid = email;
+      // const res = await addUser(email, name, password, uid);
+      // if (res) {
+      //   setConfirmation(true);
+      // }
     }
   };
 
