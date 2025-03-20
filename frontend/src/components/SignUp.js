@@ -1,8 +1,9 @@
 import { React, useState } from "react";
+
 import { getFirestore, doc,setDoc, getDoc } from 'firebase/firestore';
 import { app } from './firebaseConfig.js';
 
-const db = getFirestore(app); 
+const db = getFirestore(app);
 
 const addUser = async (email, name, password, uid) => {
   try {
@@ -22,8 +23,8 @@ const addUser = async (email, name, password, uid) => {
     });
     console.log("User added successfully!");
   } catch (e) {
-    console.error("Error adding user: ", e);  
-    alert(`Error adding user: ${e.message}`);  
+    console.error("Error adding user: ", e);
+    alert(`Error adding user: ${e.message}`);
     throw new Error("Error adding user");
   }
 };
@@ -62,15 +63,19 @@ const SignUp = ({ onClose }) => {
       valid = false;
     }
     if (valid) {
-      const uid = email; 
+      const uid = email;
       addUser(email, name, password, uid);
       setConfirmation(true);
     }
   };
 
   return (
-    <div className="loginOverlay" onClick={onClose}>
-      <div className="loginComponent" onClick={(e) => e.stopPropagation()}>
+    <div className="loginOverlay" data-testid="overlay" onClick={onClose}>
+      <div
+        className="loginComponent"
+        data-testid="component"
+        onClick={(e) => e.stopPropagation()}
+      >
         {confirmation ? (
           <div>TODO: Send email to verify and create account</div>
         ) : (
@@ -84,6 +89,7 @@ const SignUp = ({ onClose }) => {
                 setEmailError("");
               }}
               className="loginInput"
+              data-testid="email-input"
             />
             {emailError && <div className="errorText">{emailError}</div>}
 
@@ -98,6 +104,7 @@ const SignUp = ({ onClose }) => {
                 setNameError("");
               }}
               className="loginInput"
+              data-testid="name-input"
             />
             {nameError && <div className="errorText">{nameError}</div>}
 
@@ -112,6 +119,7 @@ const SignUp = ({ onClose }) => {
                 setPasswordError("");
               }}
               className="loginInput"
+              data-testid="pass-input"
             />
 
             <div className="loginText" style={{ marginTop: "0.75rem" }}>
@@ -125,6 +133,7 @@ const SignUp = ({ onClose }) => {
                 setPasswordError("");
               }}
               className="loginInput"
+              data-testid="verify-input"
             />
             {passwordError && <div className="errorText">{passwordError}</div>}
 

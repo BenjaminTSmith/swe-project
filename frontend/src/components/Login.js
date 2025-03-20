@@ -46,8 +46,12 @@ const Login = ({ onClose, onSignup }) => {
   };
 
   return (
-    <div className="loginOverlay" onClick={onClose}>
-      <div className="loginComponent" onClick={(e) => e.stopPropagation()}>
+    <div className="loginOverlay" data-testid="login-overlay" onClick={onClose}>
+      <div
+        className="loginComponent"
+        data-testid="login-form"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="loginText"> UFL Email</div>
         <input
           type="text"
