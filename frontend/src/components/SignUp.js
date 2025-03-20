@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { getFirestore, doc,setDoc } from 'firebase/firestore';
+import { getFirestore, doc,setDoc, getDoc } from 'firebase/firestore';
 import { app } from './firebaseConfig.js';
 
 const db = getFirestore(app); 
@@ -8,6 +8,13 @@ const addUser = async (email, name, password, uid) => {
   try {
     console.log("Attempting to add user with UID: ", uid);
     const userRef = doc(db, "Users", uid);
+
+    const userCheck = await getDoc(userRef);
+    if (userCheck.exists()){
+      alert(`User with email ${email} already exists!`);
+      return;
+    }
+    
     await setDoc(userRef, {
       email: email,
       name: name,
