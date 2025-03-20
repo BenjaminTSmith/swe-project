@@ -1,7 +1,7 @@
 import { React, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth, app } from "./firebaseConfig.js";
+import { auth, app } from "../firebaseConfig.js";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 //logic to verify logins

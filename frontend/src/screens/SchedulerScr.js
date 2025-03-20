@@ -3,8 +3,13 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../css/scheduler.css";
+import { getAuth } from "firebase/auth";
+import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { app } from "../firebaseConfig";
 
 const localizer = momentLocalizer(moment);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const SchedulerScr = () => {
   const [availability, setAvailability] = useState([]);
@@ -69,10 +74,39 @@ const SchedulerScr = () => {
     }
   };
 
-  const saveChanges = () => {
-    alert(
-      "TODO: Make this function update the database with the new availability, location, subjects, and public status"
-    );
+  const saveChanges = async () => {
+    const user = auth.currentUser; // Get the currently signed-in user
+  
+    if (!user) {
+      alert("You must be signed in to save changes.");
+      return;
+    }
+  
+    try {
+      const userDocRef = doc(db, "Users", user.email); 
+      const userDocSnap = await getDoc(userDocRef); 
+  
+      if (!userDocSnap.exists()) {
+        alert("User data not found.");
+        return;
+      }
+  
+      await updateDoc(userDocRef, {
+        isPublic: isPublic,
+        location: location,
+        subjects: subjects,
+        rate: rate,
+        availability: availability.map((slot) => ({
+          start: slot.start.toISOString(),
+          end: slot.end.toISOString(),
+        })),
+      });
+  
+      alert("Changes saved successfully!");
+    } catch (error) {
+      console.error("Error updating Firestore:", error);
+      alert("Failed to save changes.");
+    }
   };
 
   return (
