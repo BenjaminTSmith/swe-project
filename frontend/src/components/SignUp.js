@@ -72,15 +72,20 @@ const SignUp = ({ onClose }) => {
     }
 
     if (valid) {
-      const userCredential = createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const emailUID = email.toLowerCase();
-      const res = await addUser(email, name, password, emailUID);
-      if (res) {
-        setConfirmation(true);
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const emailUID = email.toLowerCase();
+        const res = await addUser(email, name, password, emailUID);
+        if (res) {
+          setConfirmation(true);
+        }
+      } catch (error) {
+        setPasswordError(error.message);
+        return;
       }
     }
   };

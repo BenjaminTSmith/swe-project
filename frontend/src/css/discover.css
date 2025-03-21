@@ -44,11 +44,14 @@
   background-color: rgb(217, 217, 217);
   border-radius: 5px;
   padding: 1rem;
-  align-items: center;
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  gap: 4rem;
+  align-items: center;
+  width: 100%;
+}
+
+.tutorText {
+  flex-grow: 1;
 }
 
 .tutorName {
@@ -59,6 +62,9 @@
 .tutorDesc {
   font-size: 1rem;
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .scheduleButton {
@@ -71,7 +77,8 @@
   transition: background-color 0.25s, box-shadow 0.25s;
   margin: auto;
   height: 4rem;
-  flex: 1;
+  max-width: 20vw;
+  min-width: 20vw;
 }
 
 .scheduleButton:hover {
@@ -104,4 +111,27 @@
   z-index: 1001;
   position: relative;
   min-width: 20%;
+}
+
+.rbc-time-slot {
+  background-color: #ffebee;
+  pointer-events: none;
+}
+
+.selected-slot {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.errorText {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  text-align: center;
+  color: red;
+  font-size: 1rem;
 }
