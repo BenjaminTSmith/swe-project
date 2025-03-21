@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -9,6 +9,8 @@ const PopupCalendar = ({ onClose, tutor }) => {
   const [availability, setAvailability] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("week");
+
+  useEffect(() => {}, []);
 
   const handleConfirm = () => {
     alert("TODO: Save the new booking to tutor and student calendars");
