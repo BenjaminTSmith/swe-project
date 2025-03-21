@@ -1,33 +1,12 @@
 import { React, useState } from "react";
-
 import { getFirestore, doc,setDoc, getDoc } from 'firebase/firestore';
-import { app } from './firebaseConfig.js';
+import { app } from "../firebaseConfig.js";
+
+
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+const auth = getAuth(); 
 
 const db = getFirestore(app);
-
-const addUser = async (email, name, password, uid) => {
-  try {
-    console.log("Attempting to add user with UID: ", uid);
-    const userRef = doc(db, "Users", uid);
-
-    const userCheck = await getDoc(userRef);
-    if (userCheck.exists()){
-      alert(`User with email ${email} already exists!`);
-      return;
-    }
-    
-    await setDoc(userRef, {
-      email: email,
-      name: name,
-      password: password,
-    });
-    console.log("User added successfully!");
-  } catch (e) {
-    console.error("Error adding user: ", e);
-    alert(`Error adding user: ${e.message}`);
-    throw new Error("Error adding user");
-  }
-};
 
 const SignUp = ({ onClose }) => {
   const [email, setEmail] = useState("");
@@ -39,7 +18,29 @@ const SignUp = ({ onClose }) => {
   const [passwordError, setPasswordError] = useState("");
   const [nameError, setNameError] = useState("");
 
-  const handleSignup = () => {
+  const addUser = async (email, name, password, uid) => {
+    try {
+      const userRef = doc(db, "Users", uid);
+
+      const userCheck = await getDoc(userRef);
+      if (userCheck.exists()) {
+        setPasswordError(`User with email ${email} already exists!`);
+        return false;
+      }
+      await setDoc(userRef, {
+        email: email,
+        name: name,
+        password: password,
+      });
+    } catch (e) {
+      console.error("Error adding user: ", e);
+      setPasswordError(`Error adding user: ${e.message}`);
+      return false;
+    }
+    return true;
+  };
+
+  const handleSignup = async () => {
     let valid = true;
     const ufRegex = /^[A-Za-z0-9._%+-]+@ufl\.edu$/i;
     if (email === "") {
@@ -53,7 +54,12 @@ const SignUp = ({ onClose }) => {
     if (password === "") {
       setPasswordError("Password can't be blank");
       valid = false;
-    } else if (password !== verifyPass) {
+      
+    } 
+    if (password.length< 6){
+      setPasswordError("Password is too short! Minimum 6 characters");
+      valid = false;
+    }else if (password !== verifyPass) {
       setPasswordError("Passwords do not match");
       valid = false;
     }
@@ -62,11 +68,15 @@ const SignUp = ({ onClose }) => {
       setNameError("Name can't be blank");
       valid = false;
     }
+
     if (valid) {
-      const uid = email;
-      addUser(email, name, password, uid);
+      const userCredential = createUserWithEmailAndPassword(auth, email, password);
+      const emailUID = email.toLowerCase();      
+      addUser(email, name, password, emailUID);
       setConfirmation(true);
-    }
+    
+  }
+    
   };
 
   return (
