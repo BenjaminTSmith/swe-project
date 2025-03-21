@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { app } from "../firebaseConfig.js";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 const db = getFirestore(app);
 const auth = getAuth();
