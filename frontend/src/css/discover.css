@@ -112,3 +112,26 @@
   position: relative;
   min-width: 20%;
 }
+
+.rbc-time-slot {
+  background-color: #ffebee;
+  pointer-events: none;
+}
+
+.selected-slot {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.errorText {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border-radius: 4px;
+  text-align: center;
+  color: red;
+  font-size: 1rem;
+}
