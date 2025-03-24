@@ -65,7 +65,9 @@ describe("SignUp Component", () => {
 
     // Should show error messages
     expect(screen.getByText("Email can't be blank")).toBeInTheDocument();
-    expect(screen.getByText("Password can't be blank")).toBeInTheDocument();
+    expect(
+      screen.getByText("Password is too short! Minimum 6 characters")
+    ).toBeInTheDocument();
     expect(screen.getByText("Name can't be blank")).toBeInTheDocument();
   });
 
