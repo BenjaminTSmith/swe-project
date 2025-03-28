@@ -99,7 +99,7 @@ const PopupCalendar = ({ onClose, tutor }) => {
             }
           />
         </div>
-        {error && <div className="errorText">{error}</div>}
+        {error && <div className="discoverErrorText">{error}</div>}
         {selectedSlot && (
           <div className="selected-slot">
             Selected:{" "}
