@@ -49,7 +49,7 @@ const DiscoverScr = () => {
               .filter(
                 (user) =>
                   user.isPublic &&
-                  user.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  (user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.subjects.toLowerCase().includes(searchTerm.toLowerCase()))
               )
               .map((user) => (
                 <TutorCard
