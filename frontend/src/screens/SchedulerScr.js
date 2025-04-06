@@ -211,7 +211,15 @@ const SchedulerScr = () => {
                 <input
                   type="number"
                   value={rate}
-                  onChange={(event) => setRate(event.target.value)}
+                  min="0"
+                  step="0.01"
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    const valid = /^\d*\.?\d{0,2}$/.test(value); 
+                    if (valid || value === "") {
+                      setRate(value);
+                    }
+                  }}
                   className="schedulerTextInput smallInput"
                 />
               </div>
