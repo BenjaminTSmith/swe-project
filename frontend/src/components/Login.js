@@ -1,11 +1,7 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth, app } from "../firebaseConfig.js";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-
-//logic to verify logins
-const db = getFirestore(app);
+import { signInWithEmailAndPassword } from "firebase/auth"; 
+import { auth } from "../firebaseConfig.js";
 
 const Login = ({ onClose, onSignup }) => {
   const navigate = useNavigate();
@@ -13,35 +9,23 @@ const Login = ({ onClose, onSignup }) => {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
-  const checkLogin = async (uid, password) => {
-    // Only works with last entry in Users
-    try {
-      const userRef = doc(db, "Users", uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        if (userData.password === password) {
-          // goes through with auth
-          return userData;
-        } else {
-          //wrong password
-          setLoginError("Incorrect Password");
-        }
-      } else {
-        //user email not found
-        setLoginError("User Not found");
-      }
-    } catch (e) {
-      //exceptions
-      console.error("Error during login:", e);
-    }
-  };
-
   const handleLogin = async () => {
-    const result = await checkLogin(email, password);
-    if (result) {
-      navigate("/discover");
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (user) {
+        navigate("/discover");
+      }
+    } catch (error) {
+      const errorCode = error.code;
+      if (errorCode === "auth/user-not-found") {
+        setLoginError("User not found");
+      } else if (errorCode === "auth/wrong-password") {
+        setLoginError("Incorrect password");
+      } else {
+        setLoginError("Failed to sign in. Try again.");
+      }
     }
   };
 

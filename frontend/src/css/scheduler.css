@@ -108,3 +108,22 @@
   width: 100%;
   border-radius: 0;
 }
+.rateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.2rem;
+}
+
+.smallInput {
+  min-width: unset;
+  width: 80px;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+}
+
+.dollarSign {
+  font-weight: bold;
+  font-size: 1rem;
+  padding-top: 2px;
+}
