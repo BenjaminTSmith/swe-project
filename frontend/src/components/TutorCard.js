@@ -12,7 +12,7 @@ const TutorCard = ({ tutor, onSelect }) => {
             <b>Subjects: </b> {subjects}
           </div>
           <div>
-            <b>Hourly Rate: </b> {rate}
+            <b>Hourly Rate: </b> ${parseFloat(rate).toFixed(2)}
           </div>
           <div>
             <b>Location: </b> {location}
