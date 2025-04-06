@@ -28,7 +28,6 @@ const SignUp = ({ onClose }) => {
       await setDoc(userRef, {
         email: email,
         name: name,
-        password: password,
         availability: [],
         location: "",
         subjects: "",
