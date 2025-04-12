@@ -1,104 +1,130 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
+import "../css/profile.css";
 
 const ProfileScr = () => {
   const location = useLocation();
-  const profileUser = location.state?.user;
-  const [currentUser, setCurrentUser] = useState(null);
-  const [formData, setFormData] = useState(profileUser || {});
+  const passedUser = location.state.user;
 
-  const isOwnProfile = currentUser && profileUser?.uid === currentUser.uid;
+  const [currentUser, setCurrentUser] = useState(null);
+  const [formData, setFormData] = useState({
+    ...passedUser,
+    bio:
+      passedUser.bio ||
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto quia quaerat molestias nisi quibusdam, quisquam reprehenderit omnis, perferendis optio corrupti cum vitae! Qui aliquam explicabo quibusdam modi? Aspernatur dicta accusantium amet quos in. Corporis, iure laboriosam repellendus sint quod ipsam asperiores ducimus distinctio! Maiores nesciunt soluta, magnam voluptates veritatis nemo?",
+  });
+
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
     });
+
     return () => unsubscribe();
   }, []);
 
+  const isOwnProfile = currentUser && formData.uid === currentUser.uid;
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: update Firestore with formData
-    console.log("Saving changes:", formData);
+
+    try {
+      const docRef = doc(db, "Users", currentUser.email);
+      await updateDoc(docRef, {
+        bio: formData.bio,
+        subjects: formData.subjects,
+        location: formData.location,
+        rate: formData.rate,
+        phone: formData.phone,
+      });
+      alert("Profile updated!");
+    } catch (err) {
+      alert("Failed to save changes.");
+    }
   };
 
   return (
-    <div>
-      <h1>{formData.name}'s Profile</h1>
-      <form onSubmit={handleSubmit}>
-        <p>Email: {formData.email}</p>
+    <div className="profileContainer">
+      <h1 className="profileName">{formData.name}</h1>
 
-        <label>
-          Location:
+      <form onSubmit={handleSubmit} className="profileForm">
+        <div className="profileBioWrapper">
           {isOwnProfile ? (
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
+            <textarea
+              name="bio"
+              value={formData.bio}
               onChange={handleChange}
+              className="profileTextarea"
+              rows={5}
             />
           ) : (
-            <span> {formData.location} </span>
+            <p className="profileBio">{formData.bio}</p>
           )}
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Subjects:
+        <div className="profileField">
+          <strong>Subjects:</strong>
           {isOwnProfile ? (
             <input
-              type="text"
               name="subjects"
               value={formData.subjects}
               onChange={handleChange}
+              className="schedulerTextInput"
             />
           ) : (
-            <span> {formData.subjects} </span>
+            <span>{formData.subjects}</span>
           )}
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Rate:
+        <div className="profileField">
+          <strong>Location:</strong>
           {isOwnProfile ? (
             <input
-              type="text"
-              name="rate"
-              value={formData.rate}
+              name="location"
+              value={formData.location}
               onChange={handleChange}
+              className="schedulerTextInput"
             />
           ) : (
-            <span> {formData.rate} </span>
+            <span>{formData.location}</span>
           )}
-        </label>
-        <br />
+        </div>
 
-        <label>
-          Public:
+        <div className="profileField">
+          <strong>Hourly Rate:</strong>
           {isOwnProfile ? (
-            <input
-              type="checkbox"
-              name="isPublic"
-              checked={formData.isPublic}
-              onChange={handleChange}
-            />
+            <div className="rateWrapper">
+              <span className="dollarSign">$</span>
+              <input
+                name="rate"
+                type="number"
+                value={formData.rate}
+                onChange={handleChange}
+                className="schedulerTextInput smallInput"
+              />
+            </div>
           ) : (
-            <span> {formData.isPublic ? "Yes" : "No"} </span>
+            <span>${formData.rate}</span>
           )}
-        </label>
-        <br />
+        </div>
 
-        {isOwnProfile && <button type="submit">Save</button>}
+        {isOwnProfile && (
+          <button type="submit" className="saveButton">
+            Save Changes
+          </button>
+        )}
       </form>
     </div>
   );

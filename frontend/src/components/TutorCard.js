@@ -1,12 +1,12 @@
 import React from "react";
 
-const TutorCard = ({ tutor, onSelect }) => {
+const TutorCard = ({ tutor, onSelect, onNameClick }) => {
   const { name, subjects, rate, location } = tutor;
 
   return (
     <div className="tutorCard">
       <div className="tutorText">
-        <div className="tutorName">{name}</div>
+        <div className="tutorName" onClick={onNameClick}>{name}</div>
         <div className="tutorDesc">
           <div>
             <b>Subjects: </b> {subjects}

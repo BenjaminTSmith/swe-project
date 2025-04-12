@@ -22,8 +22,8 @@ const Header = () => {
           : {};
 
         setUser({
-          name: currentUser.displayName || "User",
-          email: currentUser.email,
+          name: userData.name || "User",
+          email: userData.email,
           uid: currentUser.uid,
           location: userData.location || "",
           subjects: userData.subjects || "",
@@ -35,7 +35,7 @@ const Header = () => {
       }
     });
 
-    return () => unsubscribe(); // cleanup
+    return () => unsubscribe();
   }, []);
 
   const isLoginPage = location.pathname === "/";
