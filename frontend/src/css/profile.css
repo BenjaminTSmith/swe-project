@@ -1,0 +1,114 @@
+.profileContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 5rem;
+  padding-top: 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.profileName {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.profileForm {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  box-sizing: border-box;
+}
+
+.profileBioWrapper {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.profileBio {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #333;
+  line-height: 1.5;
+  box-sizing: border-box;
+  resize: vertical;
+  text-align: left;
+}
+
+.profileTextarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #666666;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: #333;
+  line-height: 1.5;
+  box-sizing: border-box;
+  resize: vertical;
+  text-align: left;
+}
+
+.profileField {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 1rem;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.profileField strong {
+  min-width: 130px;
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.schedulerTextInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #666666;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.rateWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.smallInput {
+  width: 100px;
+  padding: 0.5rem;
+}
+
+.dollarSign {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.saveButton {
+  font-size: 1.2rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #666666;
+  background-color: white;
+  transition: background-color 0.25s, box-shadow 0.25s;
+  align-self: center;
+  margin-top: 1rem;
+}
+
+.saveButton:hover {
+  background-color: #f0f0f0;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}

@@ -3,6 +3,7 @@ import TutorCard from "../components/TutorCard";
 import PopupCalendar from "../components/PopupCalendar";
 import "../css/discover.css";
 import { getAllUsers } from "../components/discover";
+import { useNavigate } from "react-router-dom";
 
 const DiscoverScr = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,6 +11,7 @@ const DiscoverScr = () => {
   const [selectedTutor, setSelectedTutor] = useState({});
   const [allUsers, setAllUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
@@ -36,9 +38,7 @@ const DiscoverScr = () => {
           type="text"
           placeholder="Search..."
           value={searchTerm}
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
+          onChange={(event) => setSearchTerm(event.target.value)}
           className="discoverInput"
         />
         <div className="tutorCardContainer">
@@ -49,15 +49,18 @@ const DiscoverScr = () => {
               .filter(
                 (user) =>
                   user.isPublic &&
-                  (user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.subjects.toLowerCase().includes(searchTerm.toLowerCase()))
+                  (user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    user.subjects.toLowerCase().includes(searchTerm.toLowerCase()))
               )
               .map((user) => (
                 <TutorCard
+                  key={user.uid}
                   tutor={user}
                   onSelect={() => {
                     setPopup(true);
                     setSelectedTutor(user);
                   }}
+                  onNameClick={() => navigate("/profile", { state: { user } })}
                 />
               ))
           )}
