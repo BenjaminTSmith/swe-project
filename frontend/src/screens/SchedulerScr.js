@@ -18,7 +18,6 @@ const SchedulerScr = () => {
   const [availability, setAvailability] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("week");
-
   const [location, setLocation] = useState("");
   const [subjects, setSubjects] = useState("");
   const [rate, setRate] = useState("");
