@@ -3,11 +3,14 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../css/scheduler.css";
-
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // adjust if needed
 const localizer = momentLocalizer(moment);
 
-const PopupCalendar = ({ onClose, tutor }) => {
+const PopupCalendar = ({ onClose, tutor, student }) => {
   const [availability, setAvailability] = useState([]);
+  const [bookings, setBookings] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("week");
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -24,36 +27,114 @@ const PopupCalendar = ({ onClose, tutor }) => {
     }
   }, [tutor]);
 
+  const adjustAvailability = (availabilityList, bookedSlot) => {
+    const result = [];
+
+    availabilityList.forEach((avail) => {
+      const { start, end } = avail;
+      const bookedStart = bookedSlot.start;
+      const bookedEnd = bookedSlot.end;
+
+      if (bookedEnd <= start || bookedStart >= end) {
+        result.push(avail);
+        return;
+      }
+
+      if (bookedStart > start) {
+        result.push({ start: start, end: bookedStart, title: "Available" });
+      }
+
+      if (bookedEnd < end) {
+        result.push({ start: bookedEnd, end: end, title: "Available" });
+      }
+    });
+
+    return result;
+  };
+
   const handleSelectSlot = (slotInfo) => {
     const { start, end } = slotInfo;
 
-    const isValid = availability.some((avail) => {
-      return start >= avail.start && end <= avail.end;
-    });
+    const isValid = availability.some(
+      (avail) => start >= avail.start && end <= avail.end
+    );
 
     if (isValid) {
       setSelectedSlot({ start, end });
       setError("");
     } else {
       setError(
-        "You can only select time slots within the tutor's availabile times (green blocks)"
+        "You can only select time slots within the tutor's available times (green blocks)"
       );
       setSelectedSlot(null);
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+  
+    if (!currentUser || !currentUser.email) {
+      setError("You must be logged in to book a session.");
+      return;
+    }
+  
     if (!selectedSlot) {
       setError("Please select an available time slot first");
       return;
     }
-    alert("TODO: Save new booking to student and tutor's calendars");
-    onClose();
-  };
+  
+    if (!tutor || !tutor.email) {
+      setError("Tutor information is missing.");
+      return;
+    }
+  
+    const bookingSlot = {
+      start: selectedSlot.start.toISOString(),
+      end: selectedSlot.end.toISOString(),
+      tutorEmail: tutor.email,
+      studentEmail: currentUser.email,
+    };
+  
+    const newAvailability = adjustAvailability(availability, selectedSlot);
+    setAvailability(newAvailability);
+    setBookings((prev) => [
+      ...prev,
+      {
+        start: new Date(bookingSlot.start),
+        end: new Date(bookingSlot.end),
+        title: "Busy"
+      }
+    ]);
+      
+    try {
+      const tutorRef = doc(db, "Users", tutor.email);
+      await updateDoc(tutorRef, {
+        availability: newAvailability.map((slot) => ({
+          start: slot.start.toISOString(),
+          end: slot.end.toISOString(),
+          title: "Available"
+        })),
+        scheduledTimeToMeet: arrayUnion(bookingSlot),
+      });
+  
+      const studentRef = doc(db, "Users", currentUser.email);
+      await updateDoc(studentRef, {
+        scheduledTimeToMeet: arrayUnion(bookingSlot),
+      });
+  
+  
+      setSelectedSlot(null);
+      onClose();
+    } catch (error) {
+      setError("Something went wrong while saving your booking.");
+    }
+  }
 
   const eventPropGetter = (event) => ({
     style: {
-      backgroundColor: "#4CAF50",
+      backgroundColor: event.title === "Available" ? "#4CAF50" : "#1976D2",
+      color: "#fff",
       border: "none",
     },
   });
@@ -65,7 +146,7 @@ const PopupCalendar = ({ onClose, tutor }) => {
           <Calendar
             className="calendar"
             localizer={localizer}
-            events={availability}
+            events={[...availability, ...bookings]}
             startAccessor="start"
             endAccessor="end"
             selectable
@@ -79,24 +160,8 @@ const PopupCalendar = ({ onClose, tutor }) => {
             step={15}
             timeslots={4}
             eventPropGetter={eventPropGetter}
-            min={
-              new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate(),
-                8,
-                0
-              )
-            }
-            max={
-              new Date(
-                currentDate.getFullYear(),
-                currentDate.getMonth(),
-                currentDate.getDate(),
-                22,
-                0
-              )
-            }
+            min={new Date(currentDate.setHours(8, 0))}
+            max={new Date(currentDate.setHours(22, 0))}
           />
         </div>
         {error && <div className="discoverErrorText">{error}</div>}
