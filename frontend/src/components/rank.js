@@ -1,4 +1,4 @@
-import { getAllUsers } from "../getAllUsers.js";
+import { getAllUsers } from "./discover.js";
 
 export const calculateTutorRanks = async () => {
     try {
