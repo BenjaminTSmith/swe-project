@@ -131,6 +131,8 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
     }
   }
 
+
+
   const eventPropGetter = (event) => ({
     style: {
       backgroundColor: event.title === "Available" ? "#4CAF50" : "#1976D2",
