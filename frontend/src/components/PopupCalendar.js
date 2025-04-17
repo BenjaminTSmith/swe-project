@@ -3,7 +3,9 @@ import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../css/scheduler.css";
-
+import { getAuth } from "firebase/auth";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../firebaseConfig"; // adjust if needed
 const localizer = momentLocalizer(moment);
 
 const PopupCalendar = ({ onClose, tutor, student }) => {
@@ -68,28 +70,68 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+  
+    if (!currentUser || !currentUser.email) {
+      setError("You must be logged in to book a session.");
+      return;
+    }
+  
     if (!selectedSlot) {
       setError("Please select an available time slot first");
       return;
     }
   
-    const newAvailability = adjustAvailability(availability, selectedSlot);
-    setAvailability(newAvailability);
+    if (!tutor || !tutor.email) {
+      setError("Tutor information is missing.");
+      return;
+    }
   
-    const newBooking = {
-      start: selectedSlot.start,
-      end: selectedSlot.end,
-      // tutorId: tutor.uid,
-      // studentId: student.uid,
-      title: `Session with Student`, // replace with student's name
+    const bookingSlot = {
+      start: selectedSlot.start.toISOString(),
+      end: selectedSlot.end.toISOString(),
+      tutorEmail: tutor.email,
+      studentEmail: currentUser.email,
     };
   
-    // TODO: save the newBooking to the student and tutor's calendars.
+    const newAvailability = adjustAvailability(availability, selectedSlot);
+    setAvailability(newAvailability);
+    setBookings((prev) => [
+      ...prev,
+      {
+        start: new Date(bookingSlot.start),
+        end: new Date(bookingSlot.end),
+        title: "Busy"
+      }
+    ]);
+      
+    try {
+      const tutorRef = doc(db, "Users", tutor.email);
+      await updateDoc(tutorRef, {
+        availability: newAvailability.map((slot) => ({
+          start: slot.start.toISOString(),
+          end: slot.end.toISOString(),
+          title: "Available"
+        })),
+        scheduledTimeToMeet: arrayUnion(bookingSlot),
+      });
   
-    setSelectedSlot(null);
-    onClose();
-  };
+      const studentRef = doc(db, "Users", currentUser.email);
+      await updateDoc(studentRef, {
+        scheduledTimeToMeet: arrayUnion(bookingSlot),
+      });
+  
+  
+      setSelectedSlot(null);
+      onClose();
+    } catch (error) {
+      setError("Something went wrong while saving your booking.");
+    }
+  }
+
+
 
   const eventPropGetter = (event) => ({
     style: {
