@@ -1,7 +1,7 @@
 import React from "react";
 
 const TutorCard = ({ tutor, onSelect, onNameClick }) => {
-  const { name, subjects, rate, location } = tutor;
+  const { name, subjects, rate, location, rating } = tutor;
 
   return (
     <div className="tutorCard">
@@ -16,6 +16,9 @@ const TutorCard = ({ tutor, onSelect, onNameClick }) => {
           </div>
           <div>
             <b>Location: </b> {location}
+          </div>
+          <div>
+            <b>Rating: </b> {rating ? rating.toFixed(2) : "N/A"}
           </div>
         </div>
       </div>
