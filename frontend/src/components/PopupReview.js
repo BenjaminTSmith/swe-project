@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { db } from "../firebaseConfig.js";
-import { doc, getDoc, collection, addDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import "../css/profile.css";
 
 const PopupReview = ({ user, reviewer, onClose }) => {
@@ -17,21 +17,35 @@ const PopupReview = ({ user, reviewer, onClose }) => {
     }
   
     try {
+      // Get reviewer name from Firestore
       const reviewerDocRef = doc(db, "Users", reviewer.email);
       const reviewerDocSnap = await getDoc(reviewerDocRef);
       const reviewerData = reviewerDocSnap.exists() ? reviewerDocSnap.data() : {};
       const reviewerName = reviewerData.name || "Anonymous";
   
-      const reviewsCollectionRef = collection(db, "Users", user.email, "Reviews");
+      const userDocRef = doc(db, "Users", user.email);
+      const userDocSnap = await getDoc(userDocRef);
+      const userData = userDocSnap.exists() ? userDocSnap.data() : {};
   
-      await addDoc(reviewsCollectionRef, {
+      const previousReviews = userData.reviews || [];
+  
+      const newReview = {
         reviewerName,
         rating: parseInt(rating),
         review,
-        timestamp: new Date(),
+        timestamp: new Date().toISOString(),
+      };
+  
+      const updatedReviews = [...previousReviews, newReview];
+  
+      const totalRating = updatedReviews.reduce((sum, r) => sum + r.rating, 0);
+      const avgRating = updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
+  
+      await updateDoc(userDocRef, {
+        reviews: updatedReviews,
+        rating: avgRating,
       });
   
-      alert("Review submitted!");
       setError("");
       onClose();
     } catch (err) {
