@@ -144,7 +144,7 @@ const ProfileScr = () => {
             Leave a Review
           </button>
         )}
-        {reviewOpen && <PopupReview user = {passedUser} onClose={()=>setReviewOpen(false)}/>}
+        {reviewOpen && <PopupReview user = {passedUser} reviewer = {currentUser} onClose={()=>setReviewOpen(false)}/>}
       </form>
     </div>
   );

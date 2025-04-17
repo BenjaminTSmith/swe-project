@@ -90,7 +90,11 @@ const SignUp = ({ onClose }) => {
   };
 
   return (
-    <div className="loginOverlay" data-testid="overlay" onClick={onClose}>
+    <div className="loginOverlay" data-testid="overlay" onMouseDown={(e) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    }}>
       <div
         className="loginComponent"
         data-testid="component"

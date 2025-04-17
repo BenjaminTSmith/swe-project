@@ -100,7 +100,11 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
   });
 
   return (
-    <div className="calendarOverlay" onClick={onClose}>
+    <div className="calendarOverlay" onMouseDown={(e) => {
+      if (e.target === e.currentTarget) {
+        onClose();
+      }
+    }}>
       <div className="calendarComponent" onClick={(e) => e.stopPropagation()}>
         <div className="calendarContainer">
           <Calendar
