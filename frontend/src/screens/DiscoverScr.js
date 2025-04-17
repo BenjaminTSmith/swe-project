@@ -2,8 +2,8 @@ import { React, useState, useEffect } from "react";
 import TutorCard from "../components/TutorCard";
 import PopupCalendar from "../components/PopupCalendar";
 import "../css/discover.css";
-import { getAllUsers } from "../components/discover";
 import { useNavigate } from "react-router-dom";
+import { calculateTutorRanks } from "../components/rank";
 
 const DiscoverScr = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,7 +15,7 @@ const DiscoverScr = () => {
 
   const fetchUsers = async () => {
     try {
-      const users = await getAllUsers();
+      const users = await calculateTutorRanks();
       setAllUsers(users);
       setLoading(false);
     } catch (error) {
