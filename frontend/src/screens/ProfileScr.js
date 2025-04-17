@@ -4,6 +4,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
 import { signOut } from "firebase/auth";
+import PopupReview from "../components/PopupReview"
 import "../css/profile.css";
 
 const ProfileScr = () => {
@@ -11,6 +12,7 @@ const ProfileScr = () => {
   const passedUser = location.state.user;
   const navigate = useNavigate();
 
+  const [reviewOpen, setReviewOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [formData, setFormData] = useState({
     ...passedUser,
@@ -136,6 +138,13 @@ const ProfileScr = () => {
             Save Changes
           </button>
         )}
+
+        {!isOwnProfile && (
+          <button type="button" className="saveButton" onClick={()=>setReviewOpen(true)}>
+            Leave a Review
+          </button>
+        )}
+        {reviewOpen && <PopupReview user = {passedUser} onClose={()=>setReviewOpen(false)}/>}
       </form>
     </div>
   );
