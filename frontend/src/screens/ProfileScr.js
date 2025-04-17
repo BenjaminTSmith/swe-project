@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
+import { signOut } from "firebase/auth";
 import "../css/profile.css";
 
 const ProfileScr = () => {
   const location = useLocation();
   const passedUser = location.state.user;
+  const navigate = useNavigate();
 
   const [currentUser, setCurrentUser] = useState(null);
   const [formData, setFormData] = useState({
@@ -17,7 +19,15 @@ const ProfileScr = () => {
       "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto quia quaerat molestias nisi quibusdam, quisquam reprehenderit omnis, perferendis optio corrupti cum vitae! Qui aliquam explicabo quibusdam modi? Aspernatur dicta accusantium amet quos in. Corporis, iure laboriosam repellendus sint quod ipsam asperiores ducimus distinctio! Maiores nesciunt soluta, magnam voluptates veritatis nemo?",
   });
 
-
+  const handleLogout = () => {
+    signOut(auth)
+    .then(() => {
+      navigate("/");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -58,6 +68,7 @@ const ProfileScr = () => {
   return (
     <div className="profileContainer">
       <h1 className="profileName">{formData.name}</h1>
+      {isOwnProfile && (<button onClick={handleLogout} className="logoutButton">Logout</button>)}
 
       <form onSubmit={handleSubmit} className="profileForm">
         <div className="profileBioWrapper">
