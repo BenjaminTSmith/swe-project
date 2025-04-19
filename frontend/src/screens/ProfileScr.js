@@ -13,16 +13,13 @@ const ProfileScr = () => {
   const passedUser = location.state.user;
   const navigate = useNavigate();
 
-
-  console.log(passedUser);
-
   const [reviewOpen, setReviewOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [formData, setFormData] = useState({
     ...passedUser,
     bio:
       passedUser.bio ||
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto quia quaerat molestias nisi quibusdam, quisquam reprehenderit omnis, perferendis optio corrupti cum vitae! Qui aliquam explicabo quibusdam modi? Aspernatur dicta accusantium amet quos in. Corporis, iure laboriosam repellendus sint quod ipsam asperiores ducimus distinctio! Maiores nesciunt soluta, magnam voluptates veritatis nemo?",
+      ""
   });
 
   const handleLogout = () => {
@@ -63,7 +60,6 @@ const ProfileScr = () => {
         subjects: formData.subjects,
         location: formData.location,
         rate: formData.rate,
-        phone: formData.phone,
       });
       alert("Profile updated!");
     } catch (err) {
@@ -85,6 +81,7 @@ const ProfileScr = () => {
               onChange={handleChange}
               className="profileTextarea"
               rows={5}
+              placeholder="Put a short description of yourself and your preferred contact information here"
             />
           ) : (
             <p className="profileBio">{formData.bio}</p>

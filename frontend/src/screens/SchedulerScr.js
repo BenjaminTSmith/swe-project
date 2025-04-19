@@ -6,6 +6,7 @@ import "../css/scheduler.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { app } from "../firebaseConfig";
+import { setLogLevel } from "firebase/app";
 
 const localizer = momentLocalizer(moment);
 const auth = getAuth(app);
@@ -16,12 +17,14 @@ const db = getFirestore(app);
 const SchedulerScr = () => {
   const [user, setUser] = useState(null);
   const [availability, setAvailability] = useState([]);
+  const [sessions, setSessions] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState("week");
   const [location, setLocation] = useState("");
   const [subjects, setSubjects] = useState("");
   const [rate, setRate] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [allEvents, setAllEvents] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -39,11 +42,18 @@ const SchedulerScr = () => {
           setIsPublic(data.isPublic || false);
           setAvailability(
             (data.availability || []).map((slot) => ({
-              title: slot.title || "",
+              title: "",
               start: new Date(slot.start),
               end: new Date(slot.end),
             }))
           );
+          setSessions(
+            (data.scheduledTimeToMeet || []).map((slot) => ({
+              title: `Session with ${slot.studentEmail}`,
+              start: new Date(slot.start),
+              end: new Date(slot.end),
+            }))
+          )
         }
       } else {
         setUser(null); // No user logged in
@@ -53,8 +63,18 @@ const SchedulerScr = () => {
     return () => unsubscribe(); // Clean up listener on unmount
   }, []);
 
+  useEffect(() => {
+    const combined = [
+      ...availability.map((event) => ({ ...event, type: "availability" })),
+      ...sessions.map((event) => ({ ...event, type: "session" })),
+    ];
+    console.log(sessions);
+    setAllEvents(combined);
+  }, [availability, sessions]);
+
   // delete event/availability when clicked on
   const handleSelectEvent = (event) => {
+    if (event.type === "session") return;
     setAvailability((prev) =>
       prev.filter(
         (slot) =>
@@ -68,6 +88,13 @@ const SchedulerScr = () => {
   const handleSelectSlot = (slotInfo) => {
     const newStart = slotInfo.start;
     const newEnd = slotInfo.end;
+
+    const conflictWithSession = sessions.some(
+      (session) =>
+        newStart < session.end && newEnd > session.start // overlap
+    );
+  
+    if (conflictWithSession) return;
 
     const overlappingEvents = availability.filter((existing) => {
       return newStart <= existing.end && newEnd >= existing.start;
@@ -140,7 +167,7 @@ const SchedulerScr = () => {
         <Calendar
           className="calendar"
           localizer={localizer}
-          events={availability}
+          events={allEvents}
           startAccessor="start"
           endAccessor="end"
           selectable
@@ -172,9 +199,9 @@ const SchedulerScr = () => {
           }
           step={15}
           timeslots={4}
-          eventPropGetter={() => ({
+          eventPropGetter={(event) => ({
             style: {
-              backgroundColor: "#4CAF50",
+              backgroundColor: event.type === "session" ? "#2196F3" : "#4CAF50",
               border: "none",
             },
           })}
