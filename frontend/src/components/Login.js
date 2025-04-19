@@ -20,9 +20,9 @@ const Login = ({ onClose, onSignup }) => {
     } catch (error) {
       const errorCode = error.code;
       if (errorCode === "auth/user-not-found") {
-        setLoginError("User not found");
+        setLoginError("Incorrect Username/Password");
       } else if (errorCode === "auth/wrong-password") {
-        setLoginError("Incorrect password");
+        setLoginError("Incorrect Username/Password");
       } else {
         setLoginError("Failed to sign in. Try again.");
       }
