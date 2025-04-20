@@ -5,10 +5,10 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../css/scheduler.css";
 import { getAuth } from "firebase/auth";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { db } from "../firebaseConfig"; // adjust if needed
+import { db } from "../firebaseConfig";
 const localizer = momentLocalizer(moment);
 
-const PopupCalendar = ({ onClose, tutor, student }) => {
+const PopupCalendar = ({ onClose, tutor }) => {
   const [availability, setAvailability] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -16,7 +16,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [error, setError] = useState("");
 
-  useEffect(() => {
+  useEffect(() => { // populates the calendar with tutor availability
     if (tutor?.availability) {
       const convertedAvailability = tutor.availability.map((slot) => ({
         start: new Date(slot.start),
@@ -27,7 +27,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
     }
   }, [tutor]);
 
-  const adjustAvailability = (availabilityList, bookedSlot) => {
+  const adjustAvailability = (availabilityList, bookedSlot) => { // remove the booked slot from tutor's availibility
     const result = [];
 
     availabilityList.forEach((avail) => {
@@ -52,7 +52,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
     return result;
   };
 
-  const handleSelectSlot = (slotInfo) => {
+  const handleSelectSlot = (slotInfo) => { // ensures slot is valid
     const { start, end } = slotInfo;
 
     const isValid = availability.some(
@@ -70,7 +70,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
     }
   };
 
-  const handleConfirm = async () => {
+  const handleConfirm = async () => { // adds new slot to user and tutor's calenders
     const auth = getAuth();
     const currentUser = auth.currentUser;
   
@@ -142,6 +142,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
   });
 
   return (
+    // close Calendar when clicking out of form area
     <div className="calendarOverlay" onMouseDown={(e) => {
       if (e.target === e.currentTarget) {
         onClose();

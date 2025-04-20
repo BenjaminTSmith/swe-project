@@ -6,7 +6,6 @@ import "../css/scheduler.css";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { app } from "../firebaseConfig";
-import { setLogLevel } from "firebase/app";
 
 const localizer = momentLocalizer(moment);
 const auth = getAuth(app);
@@ -71,9 +70,9 @@ const SchedulerScr = () => {
     setAllEvents(combined);
   }, [availability, sessions]);
 
-  // delete event/availability when clicked on
+  // delete availability when clicked on
   const handleSelectEvent = (event) => {
-    if (event.type === "session") return;
+    if (event.type === "session") return; // do nothing if its a session
     setAvailability((prev) =>
       prev.filter(
         (slot) =>
@@ -90,10 +89,10 @@ const SchedulerScr = () => {
 
     const conflictWithSession = sessions.some(
       (session) =>
-        newStart < session.end && newEnd > session.start // overlap
+        newStart < session.end && newEnd > session.start // overlap with sessions
     );
   
-    if (conflictWithSession) return;
+    if (conflictWithSession) return; // do nothing if it overlaps with a session
 
     const overlappingEvents = availability.filter((existing) => {
       return newStart <= existing.end && newEnd >= existing.start;
@@ -207,6 +206,7 @@ const SchedulerScr = () => {
         />
       </div>
       <div className="textFieldContainer">
+        {/* Text inputs for various tutor fields */}
         <div className="inputContainer">
           Subjects
           <input
@@ -252,8 +252,6 @@ const SchedulerScr = () => {
                 />
               </div>
             </div>
-
-
 
         <div className="checkBoxContainer">
           Make Tutor Posting Public:

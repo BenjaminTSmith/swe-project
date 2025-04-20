@@ -13,6 +13,7 @@ const DiscoverScr = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Gets all public tutors, ordered based on their ranks
   const fetchUsers = async () => {
     try {
       const users = await calculateTutorRanks();
@@ -34,6 +35,7 @@ const DiscoverScr = () => {
         <PopupCalendar tutor={selectedTutor} onClose={() => setPopup(false)} />
       )}
       <div className="discoverContainer">
+        {/* search bar */}
         <input
           type="text"
           placeholder="Search..."
@@ -45,6 +47,7 @@ const DiscoverScr = () => {
           {loading ? (
             <p>Loading tutors...</p>
           ) : (
+            // creates list of TutorCards
             allUsers
               .filter(
                 (user) =>

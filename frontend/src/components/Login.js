@@ -30,6 +30,7 @@ const Login = ({ onClose, onSignup }) => {
   };
 
   return (
+    // Close login component if user clicks outside of the form area
     <div className="loginOverlay" data-testid="login-overlay" onMouseDown={(e) => {
       if (e.target === e.currentTarget) {
         onClose();
@@ -64,6 +65,7 @@ const Login = ({ onClose, onSignup }) => {
           }}
           className="loginInput"
         />
+        {/* Only display error when it's not blank */}
         {loginError && <div className="errorText">{loginError}</div>}
         <button
           className="loginButton"
