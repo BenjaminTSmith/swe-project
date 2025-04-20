@@ -68,7 +68,6 @@ const SchedulerScr = () => {
       ...availability.map((event) => ({ ...event, type: "availability" })),
       ...sessions.map((event) => ({ ...event, type: "session" })),
     ];
-    console.log(sessions);
     setAllEvents(combined);
   }, [availability, sessions]);
 
@@ -213,6 +212,7 @@ const SchedulerScr = () => {
           <input
             type="text"
             value={subjects}
+            data-testid="subjects-input"
             onChange={(event) => {
               setSubjects(event.target.value);
             }}
@@ -224,6 +224,7 @@ const SchedulerScr = () => {
           <input
             type="text"
             value={location}
+            data-testid="location-input"
             onChange={(event) => {
               setLocation(event.target.value);
             }}
@@ -237,6 +238,7 @@ const SchedulerScr = () => {
                 <input
                   type="number"
                   value={rate}
+                  data-testid="rate-input"
                   min="0"
                   step="0.01"
                   onChange={(event) => {
@@ -258,7 +260,7 @@ const SchedulerScr = () => {
           <input
             type="checkbox"
             className="checkbox"
-            value={isPublic}
+            checked={isPublic}
             onChange={() => {
               setIsPublic(!isPublic);
             }}

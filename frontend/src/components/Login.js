@@ -44,6 +44,7 @@ const Login = ({ onClose, onSignup }) => {
         <input
           type="text"
           value={email}
+          data-testid="email-input"
           onChange={(event) => {
             setEmail(event.target.value);
             setLoginError("");
@@ -56,6 +57,7 @@ const Login = ({ onClose, onSignup }) => {
         <input
           type="password"
           value={password}
+          data-testid="password-input"
           onChange={(event) => {
             setPassword(event.target.value);
             setLoginError("");
