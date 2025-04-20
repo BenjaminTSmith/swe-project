@@ -1,6 +1,7 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { app } from "../firebaseConfig.js";
 
+// this function is to gather all users for future functionalities such as showing tutors
 const db = getFirestore(app);
 
 export const getAllUsers = async () => {
