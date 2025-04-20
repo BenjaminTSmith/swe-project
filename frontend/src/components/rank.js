@@ -1,5 +1,7 @@
 import { getAllUsers } from "./discover.js";
 
+// this function is to calculate the rank for each of the tutors to show which tutor's performance is best to users
+
 export const calculateTutorRanks = async () => {
     try {
       
