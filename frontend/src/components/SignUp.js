@@ -38,6 +38,7 @@ const SignUp = ({ onClose }) => {
         rate: "",
         isPublic: false,
       });
+      console.log("in here");
     } catch (e) {
       console.error("Error adding user: ", e);
       setPasswordError(`Error adding user: ${e.message}`);
