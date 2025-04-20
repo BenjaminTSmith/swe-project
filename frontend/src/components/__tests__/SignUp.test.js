@@ -24,7 +24,7 @@ describe("SignUp Component", () => {
   test("clicking outside modal calls onClose", () => {
     render(<SignUp onClose={mockOnClose} />);
 
-    fireEvent.click(screen.getByTestId("overlay"));
+    fireEvent.mouseDown(screen.getByTestId("overlay"));
     expect(mockOnClose).toHaveBeenCalledTimes(1);
   });
 

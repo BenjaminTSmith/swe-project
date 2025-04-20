@@ -170,7 +170,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
             max={new Date(currentDate.setHours(22, 0))}
           />
         </div>
-        {error && <div className="discoverErrorText">{error}</div>}
+        {error && <div className="discoverErrorText" data-testid="calendar-error">{error}</div>}
         {selectedSlot && (
           <div className="selected-slot">
             Selected:{" "}
@@ -187,6 +187,7 @@ const PopupCalendar = ({ onClose, tutor, student }) => {
           className="scheduleButton"
           style={{ marginTop: "1vh" }}
           onClick={handleConfirm}
+          data-testid="calendar-confirm"
         >
           Confirm
         </button>
