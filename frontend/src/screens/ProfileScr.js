@@ -70,6 +70,8 @@ const ProfileScr = () => {
   return (
     <div className="profileContainer">
       <h1 className="profileName">{formData.name}</h1>
+
+      {/* Logout button, submit button, and editable fields appear if its the user's own profile */}
       {isOwnProfile && (<button onClick={handleLogout} className="logoutButton">Logout</button>)}
 
       <form onSubmit={handleSubmit} className="profileForm">
@@ -88,11 +90,13 @@ const ProfileScr = () => {
           )}
         </div>
 
+        {/* field to display the user's rating */}
         {passedUser?.rating && <div className="profileField">
           <strong>Rating:</strong>
           <span>{passedUser.rating?.toFixed(2)}</span>
         </div>}
 
+        {/* Field to display the user's subjects */}
         <div className="profileField">
           <strong>Subjects:</strong>
           {isOwnProfile ? (
@@ -107,6 +111,7 @@ const ProfileScr = () => {
           )}
         </div>
 
+        {/* Field to display preferred meeting location */}
         <div className="profileField">
           <strong>Location:</strong>
           {isOwnProfile ? (
@@ -121,6 +126,7 @@ const ProfileScr = () => {
           )}
         </div>
 
+        {/* Field to display tutor's rate */}
         <div className="profileField">
           <strong>Hourly Rate:</strong>
           {isOwnProfile ? (
@@ -156,6 +162,7 @@ const ProfileScr = () => {
         </div>
         {reviewOpen && <PopupReview user = {passedUser} reviewer = {currentUser} onClose={()=>setReviewOpen(false)}/>}
         <div className="reviewCardContainer">
+        {/* Creates a list of ReviewCards */}
         {passedUser?.reviews && passedUser?.reviews.map((review, index) => (
           <ReviewCard key={index} review={review} />
         ))}

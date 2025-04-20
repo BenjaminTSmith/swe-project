@@ -11,6 +11,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // gets the current user from firebase if someone is logged in
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {

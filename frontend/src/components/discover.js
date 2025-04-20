@@ -4,7 +4,7 @@ import { app } from "../firebaseConfig.js";
 // this function is to gather all users for future functionalities such as showing tutors
 const db = getFirestore(app);
 
-export const getAllUsers = async () => {
+export const getAllUsers = async () => { // gets all public users from firebase
   try {
     const userRef = collection(db, "Users");
     const userSnap = await getDocs(userRef);

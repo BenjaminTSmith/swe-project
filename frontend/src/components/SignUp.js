@@ -67,6 +67,7 @@ const SignUp = ({ onClose }) => {
   const handleSignup = async () => {
     let valid = true;
     const ufRegex = /^[A-Za-z0-9._%+-]+@ufl\.edu$/i;
+    // ensure email ends with @ufl.edu
     if (email === "") {
       setEmailError("Email can't be blank");
       valid = false;
@@ -75,6 +76,7 @@ const SignUp = ({ onClose }) => {
       valid = false;
     }
 
+    // ensure password is valid
     if (password === "") {
       setPasswordError("Password can't be blank");
       valid = false;
@@ -119,6 +121,7 @@ const SignUp = ({ onClose }) => {
   };
 
   return (
+    // Close SignUp when clicking out of the form area
     <div className="loginOverlay" data-testid="overlay" onMouseDown={(e) => {
       if (e.target === e.currentTarget) {
         onClose();
