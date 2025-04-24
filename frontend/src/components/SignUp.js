@@ -20,7 +20,7 @@ const SignUp = ({ onClose }) => {
   const [codeInput, setCodeInput] = useState("");
   const [codeError, setCodeError] = useState("");
 
-  const addUser = async (email, name, password, uid) => {
+  const addUser = async (email, name, uid) => {
     try {
       const userRef = doc(db, "Users", uid);
 
